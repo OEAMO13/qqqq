@@ -2,22 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Discord OAuth2 Example</title>
+  <title>Discord OAuth2 Demo</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h2>Login with Discord</h2>
-  <button id="connect">Connect to Discord</button>
+  <button id="connect">Connect</button>
+
+  <div id="profile" style="display:none; margin-top:20px;">
+    <h3>User Info:</h3>
+    <img id="avatar" width="80" style="border-radius:50%;"><br>
+    <span id="username"></span> (<span id="id"></span>)
+  </div>
 
   <script>
-    const clientId = "ضع_هنا_CLIENT_ID"; // ID التطبيق من Discord Developer Portal
-    const redirectUri = "https://YOUR_USERNAME.github.io/fff/oauth2-redirect.html"; // عدله لرابطك
+    const clientId = "1408024385243189388";
+    const redirectUri = "https://oeamo13.github.io/qqq/oauth2-redirect.html";
 
-    const oauth2Url = `https://discord.com/oauth2/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=identify+guilds`;
+    const oauth2Url = `https://discord.com/oauth2/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=identify`;
 
     document.getElementById("connect").addEventListener("click", () => {
       window.location.href = oauth2Url;
     });
+
+    // Check if already logged in
+    const token = localStorage.getItem("discord_access_token");
+    if (token) {
+      fetch("https://discord.com/api/users/@me", {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then(res => res.json())
+      .then(user => {
+        document.getElementById("profile").style.display = "block";
+        document.getElementById("username").innerText = `${user.username}#${user.discriminator}`;
+        document.getElementById("id").innerText = user.id;
+        document.getElementById("avatar").src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
+      })
+      .catch(() => localStorage.removeItem("discord_access_token"));
+    }
   </script>
 </body>
 </html>
