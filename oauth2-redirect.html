@@ -4,18 +4,21 @@
   <meta charset="UTF-8">
   <title>OAuth2 Redirect</title>
   <script>
-    const params = new URLSearchParams(window.location.hash.substring(1));
-    const accessToken = params.get("access_token");
+    window.onload = () => {
+      const params = new URLSearchParams(window.location.hash.substring(1));
+      const accessToken = params.get("access_token");
 
-    if (accessToken) {
-      localStorage.setItem("discord_access_token", accessToken);
-      window.location.href = "index.html"; // يرجعك للصفحة الرئيسية
-    } else {
-      document.body.innerHTML = "<h3>OAuth2 failed. No token found.</h3>";
-    }
+      if (accessToken) {
+        localStorage.setItem("discord_access_token", accessToken);
+        document.body.innerHTML = "<h3>✅ Logged in! Token captured successfully.</h3>";
+      } else {
+        document.body.innerHTML = "<h3>❌ No token found. OAuth2 may have failed.</h3>";
+      }
+    };
   </script>
 </head>
 <body>
-  <h3>Processing login...</h3>
+  <h3>OAuth2 Redirect</h3>
+  <p>Waiting for token...</p>
 </body>
 </html>
