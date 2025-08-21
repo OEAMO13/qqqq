@@ -3,23 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <title>OAuth2 Redirect</title>
-</head>
-<body>
-  <h3>OAuth2 Redirect</h3>
-  <p>Waiting for token...</p>
-
   <script>
     const params = new URLSearchParams(window.location.hash.substring(1));
     const accessToken = params.get("access_token");
 
     if (accessToken) {
-      // خزن التوكن أو استخدمه مباشرة
       localStorage.setItem("discord_access_token", accessToken);
-      document.body.innerHTML = "<h3>✅ Logged in successfully!</h3>";
-      console.log("Access Token:", accessToken);
+      window.location.href = "index.html"; // يرجعك للصفحة الرئيسية
     } else {
-      document.body.innerHTML = "<h3>❌ No token found. OAuth2 may have failed.</h3>";
+      document.body.innerHTML = "<h3>OAuth2 failed. No token found.</h3>";
     }
   </script>
+</head>
+<body>
+  <h3>Processing login...</h3>
 </body>
 </html>
